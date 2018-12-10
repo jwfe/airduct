@@ -1,0 +1,19 @@
+{
+  "name": "airduct",
+  "version": "1.0.0",
+  "description": "toole create app",
+  "bin": {
+    "airduct": "index.js"
+  },
+  "preferGlobal": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Charles<liuqing@liluo.me>",
+  "license": "ISC",
+  "dependencies": {
+    "glob": "^7.1.3",
+    "shelljs": "^0.8.3",
+    "yargs": "^12.0.5"
+  }
+}
