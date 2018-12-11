@@ -3,10 +3,10 @@
 var yargs = require('yargs');
 
 var argv = yargs
-    .option('create', {
+    .option('init', {
         type: 'string',
-        describe: 'create new project',
-        alias: 'ct'
+        describe: 'init project',
+        alias: 'init'
     })
     .option('update', {
         boolean: true,
@@ -25,17 +25,16 @@ var argv = yargs
         alias: 'pl'
     })
 
-    .example('waterway create', 'create project successfully!')
-    .example('waterway update', 'update successfully!')
-    .example('waterway router', 'create router successfully!')
-    .example('waterway publish', 'publish project successfully!')
+    .example('airduct init', 'init project successfully!')
+    .example('airduct update', 'update successfully!')
+    .example('airduct router', 'create router successfully!')
+    .example('airduct publish', 'publish project successfully!')
     .help('h')
     .alias('h', 'help')
     .epilog('copyright 2018')
     .argv;
-['create', 'update', 'router', 'publish'].forEach(function(key){
+['init', 'update', 'router', 'publish'].forEach(function(key){
     if(argv[key]){
-        console.log(argv, argv[key]);
         const gitpath = argv._[0];
         require('./libs/' + key)(gitpath, argv[key]);
     }

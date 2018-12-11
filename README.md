@@ -17,13 +17,13 @@ module.exports = {
 }
 ```
 
-创建项目
+### 初始化项目
 
 ```
-airduct --create name gitname.git
+airduct --init
 ```
 
-更新相应配置
+### 更新相应配置
 
 ```
 airduct --update

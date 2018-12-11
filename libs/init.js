@@ -10,14 +10,22 @@ module.exports = function(gitpath, name){
         return;
     }
 
-    shell.echo('=============准备初始化中================');
-    shell.exec('git clone ' + gitpath + ' ' + name);
-    shell.cd(`./${name}`);
+    shell.echo('[1/4]准备初始化中');
     var pwd = shell.pwd().stdout;
+    var airduct = require(path.resolve(pwd, "airduct.config"));
+    // 从git目录下拉取初始化的项目
+    shell.cd(`../`);
+    var tempDir = 'temp_'+ (+new Date());
+    shell.exec('git clone ' + airduct.public.git + ' '+ tempDir);
+    // 复制内容
+    var tempAbsDir = path.join(pwd, '../' + tempDir );
+    shell.cp('-rf', tempAbsDir + '/*', pwd);
 
-    shell.echo('=============配置读取完成================');
+    // 清理到无用的内容
+    shell.rm('-rf', path.resolve(pwd, '.git/'));
+    shell.rm('-rf', tempAbsDir);
 
-    // var waterway = require(path.resolve(pwd, "waterway.config"));
+    shell.echo('[2/4]准备下载相应依赖');
     // 如果没有yarn就使用npm
     if(!shell.which('yarn')){
         shell.exec('npm install');
@@ -25,7 +33,7 @@ module.exports = function(gitpath, name){
         shell.exec('yarn install');
     }
 
-    shell.echo('=============准备创建nginx配置文件================');
+    shell.echo('[3/4]准备创建nginx配置文件');
     var configdir = path.resolve(pwd, 'config/');
     var str = fs.writeFileSync(path.resolve(configdir, 'yourname_nginx.conf') `
         server {
@@ -46,7 +54,7 @@ module.exports = function(gitpath, name){
         }
     `);
 
-    shell.echo('=============创建nginx配置文件完成，准备启动================');
+    shell.echo('[1/4]创建nginx配置文件完成，准备启动');
 
     shell.exec(`npm run dev`);
 
