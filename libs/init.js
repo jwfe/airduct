@@ -24,18 +24,14 @@ module.exports = function(gitpath, name){
     // 清理到无用的内容
     shell.rm('-rf', path.resolve(pwd, '.git/'));
     shell.rm('-rf', tempAbsDir);
+    shell.cd(pwd);
 
     shell.echo('[2/4]准备下载相应依赖');
-    // 如果没有yarn就使用npm
-    if(!shell.which('yarn')){
-        shell.exec('npm install');
-    } else {
-        shell.exec('yarn install');
-    }
-
+    shell.exec('npm install');
+    
     shell.echo('[3/4]准备创建nginx配置文件');
-    var configdir = path.resolve(pwd, 'config/');
-    var str = fs.writeFileSync(path.resolve(configdir, 'yourname_nginx.conf') `
+    var configdir = path.resolve(pwd, 'config/yourname_nginx.conf');
+    var str = fs.writeFileSync(configdir, `
         server {
             listen	   80;
             server_name  testa.test.cn;

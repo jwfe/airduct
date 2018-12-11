@@ -6,7 +6,7 @@ var argv = yargs
     .option('init', {
         type: 'string',
         describe: 'init project',
-        alias: 'init'
+        alias: 'it'
     })
     .option('update', {
         boolean: true,
@@ -34,8 +34,8 @@ var argv = yargs
     .epilog('copyright 2018')
     .argv;
 ['init', 'update', 'router', 'publish'].forEach(function(key){
-    if(argv[key]){
-        const gitpath = argv._[0];
-        require('./libs/' + key)(gitpath, argv[key]);
+    const handle = argv._[0];
+    if(handle === key){
+        require('./libs/' + key)(argv[key]);
     }
 });

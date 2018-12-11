@@ -20,11 +20,11 @@ module.exports = {
 ### 初始化项目
 
 ```
-airduct --init
+airduct init
 ```
 
 ### 更新相应配置
 
 ```
-airduct --update
+airduct update
 ```
