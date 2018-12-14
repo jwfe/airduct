@@ -23,6 +23,11 @@ module.exports = function(){
     var tempAbsDir = path.join(pwd, '../' + tempDir);
     var files = glob.sync(path.resolve(tempAbsDir, '*.{js,json}'));
     files.forEach((item) => {
+        var filename = path.parse(item).name;
+        // 忽略的文件不处理
+        if(airduct.ignore[filename]){
+            return;
+        }
         shell.cp(item, pwd);
     });
     shell.rm('-rf', tempAbsDir)
