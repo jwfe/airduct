@@ -21,8 +21,6 @@ function isFileChange(f1, f2){
     return fileHash(f1) !== fileHash(f2);
 }
 
-
-
 module.exports = function(args){
     //判定git命令是否可用
     if (!shell.which('git')) {
@@ -37,7 +35,6 @@ module.exports = function(args){
     var diff = `/home/${publish.user}/project/${config.project_name}_diff`;
     var tmp = `/tmp/${publish.user}_${config.project_name}`;
     var bak = `/tmp/${publish.user}_${config.project_name}_bak`;
-    var 
     // 没有配置
     if(!publish){
         shell.echo('Sorry, airduct.config need publish config');
