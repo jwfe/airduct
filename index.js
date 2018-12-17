@@ -36,6 +36,6 @@ var argv = yargs
 ['init', 'update', 'router', 'publish'].forEach(function(key){
     const handle = argv._[0];
     if(handle === key){
-        require('./libs/' + key)(argv[key]);
+        require('./libs/' + key)(argv);
     }
 });
