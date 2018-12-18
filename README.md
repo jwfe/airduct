@@ -48,7 +48,7 @@ module.exports = {
 airduct init
 ```
 
-### 更新相应配置
+### 运行编译
 
 ```
 // 如需watch，使用--watch
