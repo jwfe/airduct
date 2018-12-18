@@ -25,7 +25,7 @@ module.exports = function(){
     files.forEach((item) => {
         var filename = path.parse(item).name;
         // 忽略的文件不处理
-        if(airduct.ignore[filename]){
+        if(airduct.ignore && airduct.ignore[filename]){
             return;
         }
         shell.cp(item, pwd);
@@ -35,11 +35,11 @@ module.exports = function(){
     shell.echo('[3/5]配置更新完成，准备重启webpack');
     var whoami = shell.exec('who am i').stdout;
     whoami = whoami.split(' ')[0];
-    shell.exec('ps aux | grep "' + whoami + '" | grep "webpack" |grep -v grep | cut -c 9-15 | xargs kill -9');
+    shell.exec('ps aux | grep "' + whoami + '" | grep "airduct" |grep -v grep | cut -c 9-15 | xargs kill -9');
 
     shell.echo('[4/5]配置更新完成，准备重启webpack');
     shell.exec(`npm install`);
 
     shell.echo('[5/5]杀掉webpack完成，准备重启');
-    shell.exec(`npm run dev`);
+    shell.exec(`airduct run --watch`);
 }

@@ -52,6 +52,6 @@ module.exports = function(gitpath, name){
 
     shell.echo('[1/4]创建nginx配置文件完成，准备启动');
 
-    shell.exec(`npm run dev`);
+    shell.exec(`airduct run --watch`);
 
 }
