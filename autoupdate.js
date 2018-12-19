@@ -18,8 +18,8 @@ module.exports = function(){
     const client_version = client_package.version;
 
     const temp_path = path.resolve(diranme, '../temp_airduct')
-    shell.exec(`git clone ${remote_package_path} ${temp_path}`);
     const remote_package_path = 'https://github.com/Johnqing/airduct.git';
+    shell.exec(`git clone ${remote_package_path} ${temp_path}`);
     const remote_package = updateRemote(temp_path);
     const remote_version = remote_package.version;
     // 如果本地版本和远程版本一致，就不需要升级
