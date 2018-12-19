@@ -128,6 +128,28 @@ class GitImportPlugin{
     }
 }
 
+
+/**
+ * 清理编译目录
+ */
+class CleanDistPlugin{
+    constructor(options){
+        this.opts = {
+            output: options.output
+        }
+    }
+    remove(){
+        shell.rm('-rf',this.opts.output);
+    }
+    apply(compiler) {
+        compiler.plugin("entryOption",  (compilation) => {
+            if(this.opts.output){
+                this.remove()
+            }
+        });
+    }
+}
+
 module.exports = function(args){
     //判定git命令是否可用
     if (!shell.which('git')) {
@@ -191,6 +213,10 @@ module.exports = function(args){
     if (env === 'development') {
         plugins.unshift(new webpack.DefinePlugin({
             "process.env.NODE_ENV": `"${env}"`
+        }));
+        // 清理之前的编译目录
+        plugins.push(new CleanDistPlugin({
+            output: BUILD_PATH
         }))
     } else {
         plugins.push(

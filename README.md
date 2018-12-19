@@ -1,4 +1,6 @@
-# airduct
+# airduct（风道）
+
+> airduct 希望在上下游打通，并且对上下游透明
 
 ## install
 

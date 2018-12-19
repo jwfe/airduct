@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var yargs = require('yargs');
+var auotoUpdate = require('./autoupdate');
 
 var argv = yargs
     .option('env', {
@@ -16,6 +17,9 @@ var argv = yargs
     .alias('h', 'help')
     .epilog('copyright 2018')
     .argv;
+
+auotoUpdate();
+
 ['init', 'run', 'update', 'router', 'publish'].forEach(function(key){
     const handle = argv._[0];
     if(handle === key){
