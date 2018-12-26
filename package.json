@@ -1,6 +1,6 @@
 {
   "name": "airduct",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "toole create app",
   "bin": {
     "airduct": "index.js"

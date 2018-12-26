@@ -18,7 +18,7 @@ var argv = yargs
     .epilog('copyright 2018')
     .argv;
 
-auotoUpdate();
+// auotoUpdate();
 
 ['init', 'run', 'update', 'router', 'publish'].forEach(function(key){
     const handle = argv._[0];

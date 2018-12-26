@@ -12,12 +12,6 @@ npm install -g airduct
 本地项目中增加 `airduct.config.js`
 
 ```
-module.exports = {
-        public: {
-            git: '项目和配置需要更新的源git地址'
-        }
-}
-
 const path = require('path');
 
 module.exports = {
