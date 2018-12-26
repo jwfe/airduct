@@ -1,14 +1,15 @@
-var path = require('path');
-var fs = require('fs');
-var shell = require("shelljs");
-var glob = require("glob");
-var webpack = require('webpack');
-var HtmlwebpackPlugin = require("html-webpack-plugin");
-var TerserPlugin = require('terser-webpack-plugin');
+const path = require('path');
+const fs = require('fs');
+const shell = require("shelljs");
+const glob = require("glob");
+const webpack = require('webpack');
+const HtmlwebpackPlugin = require("html-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 //css tree shaking
-var PurifyCSSPlugin = require("purifycss-webpack");
-var RouterPlugin = require("./routerPlugin");
-var GitImportPlugin = require("./gitImportPlugin");
+const PurifyCSSPlugin = require("purifycss-webpack");
+const RouterPlugin = require("./routerPlugin");
+const GitImportPlugin = require("./gitImportPlugin");
+const ora = require('ora');
 
 /**
  * 清理编译目录
@@ -32,19 +33,24 @@ class CleanDistPlugin{
 }
 
 module.exports = function(args){
+    const gitshell = ora('检测git命令中').start();
     //判定git命令是否可用
     if (!shell.which('git')) {
-        shell.echo('Sorry, this script requires git');
+        gitshell.fail('Sorry, this script requires git');
         shell.exit(1);
         return;
     }
+    gitshell.succeed();
 
-    var pwd = shell.pwd().stdout;
+    const branchshell = ora('获取分支信息中').start();
+    const pwd = shell.pwd().stdout;
     var branch = shell.exec('git branch').stdout;
     var env = args['env'];
     if(!env){
         env = branch === 'master' ? 'production' : 'development';
     }
+    branchshell.succeed();
+
 
     const ROOT_PATH = path.resolve(pwd);
     const SRC_PATH = path.resolve(ROOT_PATH, "src");
@@ -296,7 +302,7 @@ module.exports = function(args){
 
     var config = Object.assign(webpack_config, airduct.webpack.config || {});
 
-    console.log('%j', config.watchOptions)
+    const webpackshell = ora('webpack执行').start();
 
     var compiler = webpack(config);
     if(args['watch']){
@@ -304,13 +310,16 @@ module.exports = function(args){
             aggregateTimeout: 300
         }, function(err, stats) {
             if(err){
-                return console.log(err);
+                webpackshell.fail(err);
+                return;
             }
-            console.log(stats.toString({
+            webpackshell.succeed(stats.toString({
                 chunks: false,  // Makes the build much quieter
                 colors: true    // Shows colors in the console
               }));
         });
+    } else {
+        webpackshell.succeed();
     }
 
 }

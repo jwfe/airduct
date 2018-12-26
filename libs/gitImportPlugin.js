@@ -1,5 +1,7 @@
-var path = require('path');
-var shell = require("shelljs");
+const path = require('path');
+const shell = require("shelljs");
+const ora = require('ora');
+
 /**
  * 通用组件更新
  */
@@ -30,11 +32,12 @@ class GitImportPlugin{
     }
     apply(compiler) {
         compiler.plugin("entryOption",  (compilation, callback) => {
-            console.log('[GitImportPlugin依赖]', JSON.stringify(this.gitImports));
+            const gitshell = ora('GitImportPlugin依赖: ' + JSON.stringify(this.gitImports)).start();
             if(this.opts.gitStock && this.gitImports){
                 this.download();
                 this.copy();
-                this.remove()
+                this.remove();
+                gitshell.succeed();
             }
             // callback();
         });

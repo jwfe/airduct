@@ -1,16 +1,19 @@
-var path = require('path');
-var fs = require('fs');
-var shell = require("shelljs");
+const path = require('path');
+const fs = require('fs');
+const shell = require("shelljs");
+const shell = require("shelljs");
+const ora = require('ora');
 
 module.exports = function(gitpath, name){
+    const gitshell = ora('检测git命令中').start();
     //判定git命令是否可用
     if (!shell.which('git')) {
-        shell.echo('Sorry, this script requires git');
+        gitshell.fail('对不起，必须依赖git');
         shell.exit(1);
         return;
     }
 
-    shell.echo('[1/4]准备初始化中');
+    const initshell = ora('开始初始化').start();
     var pwd = shell.pwd().stdout;
     var airduct = require(path.resolve(pwd, "airduct.config"));
     // 从git目录下拉取初始化的项目
@@ -25,11 +28,13 @@ module.exports = function(gitpath, name){
     shell.rm('-rf', path.resolve(pwd, '.git/'));
     shell.rm('-rf', tempAbsDir);
     shell.cd(pwd);
+    initshell.succeed();
 
-    shell.echo('[2/4]准备下载相应依赖');
+    const installshell = ora('下载相应依赖').start();
     shell.exec('npm install');
+    installshell.succeed();
     
-    shell.echo('[3/4]准备创建nginx配置文件');
+    const nginxshell = ora('创建nginx配置文件').start();
     var configdir = path.resolve(pwd, 'config/yourname_nginx.conf');
     var str = fs.writeFileSync(configdir, `
         server {
@@ -50,8 +55,9 @@ module.exports = function(gitpath, name){
         }
     `);
 
-    shell.echo('[1/4]创建nginx配置文件完成，准备启动');
+    nginxshell.succeed();
 
+    const airductshell = ora('重启airduct编译').start();
     shell.exec(`airduct run --watch`);
-
+    airductshell.succeed();
 }
