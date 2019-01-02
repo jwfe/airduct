@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs');
 const shell = require("shelljs");
-const shell = require("shelljs");
 const ora = require('ora');
 
 module.exports = function(gitpath, name){
